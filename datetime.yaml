@@ -1,0 +1,123 @@
+# Complete this file with the required information
+#  using your swagger-editor. You should 
+# - fix all the eventual error
+# - add the missing parameters
+# so that the file become a valid OAS3 spec.
+openapi: 3.0.0
+info:
+  title: "Tes open API"
+  version:  v.0.1
+  termsOfService: http://terms.tewfikadem.com
+  contact:
+    email: tewfikadem@gmail.com
+    name: Tewfik Adem
+    url: https://twitter.com/tewfikadem
+paths:
+  /echo:
+    get:
+      summary: This is echo service.
+      description: |
+        Return echo service sucess and error payload ....
+      responses:
+        '200':
+          description: "case of sucess"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ISOTimestamp'
+        '500':
+          description: "case of error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /status:
+    get:
+      summary: Return the application status.
+      description: |
+        Return the application status. You may want
+        to implement this so that it randomically
+        returns an error (eg. 429 or 503).
+      operationId: api.get_status
+      responses:
+        '200':
+          description: |
+            The status is OK.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Success'  # REMOVE ME FOR EXERCISE
+        'default':  
+          description: "this is default value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+servers: 
+- description: dev
+  url: /datetime/v1
+- description: prod
+  url: /prod/datetime/v1
+components:
+  schemas:
+    Success:
+      allOf:
+        - $ref: '#/components/schemas/Problem'
+      example: 
+        status: 
+          200
+        title:
+          "Status OK"
+        detail:
+          "tutto ok"
+    Problem:
+      type: object
+      properties:
+        status:
+          type: integer
+        title:
+          type: string
+        detail:
+          type: string
+    ISOTimestamp:
+      title: "Time Stamp"
+      type: object
+      example: 
+        timestamp: 
+          '2020-01-01T00:00:00Z'
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2020-01-01T00:00:00Z'
+        
+    Citizen:
+      title: 
+        Cittadino
+      externalDocs: 
+        description: API Documentation
+        url: https://openweathermap.org/api
+      nullable: 
+        true
+      default: 
+        null
+      description: |-
+        this is my description
+      example: 
+        given_name: Tewfik Adem
+        family_name: Polli
+        tax_code: 123456
+      type: object
+      required:
+      - tax_code
+      properties:
+        given_name:
+          type: string
+          example: Leon Battista
+        family_name:
+          type: string
+          example: Alberti
+        tax_code:
+          type: string
+          pattern: /^[A-Z0-9]{16}/
+          example: LBRLBT72D25D969F
